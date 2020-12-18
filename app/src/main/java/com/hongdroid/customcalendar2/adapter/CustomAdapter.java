@@ -79,10 +79,10 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomView
                 @Override
                 public void onClick(View view) {
                     Calendar curCalendar = mBaseCalendar.initBaseCalendar();
-                    int curPos = getAdapterPosition();                                                      // 현재 클릭 한 position ( 위치 ) 참고로 position 은 첫번째 배열 아이템이 0 으로 시작된다.
-                    int clickYear = curCalendar.get(Calendar.YEAR);                                         // 클릭 년(연)
-                    int clickMonth = curCalendar.get(Calendar.MONTH);                                   // 클릭 월
-                    int clickDay = mBaseCalendar.dataList.get(curPos);                                      // 클릭 일
+                    int curPos = getAdapterPosition();                                                            // 현재 클릭 한 position ( 위치 ) 참고로 position 은 첫번째 배열 아이템이 0 으로 시작된다.
+                    int clickYear = curCalendar.get(Calendar.YEAR);                                               // 클릭 년(연)
+                    int clickMonth = curCalendar.get(Calendar.MONTH);                                             // 클릭 월
+                    int clickDay = mBaseCalendar.dataList.get(curPos);                                            // 클릭 일
                     String combineDate = clickYear + " 년 " + (clickMonth + 1) + " 월 " + clickDay + " 일 ";       // 년 월 일 합친 String
                     Toast.makeText(mContext, combineDate, Toast.LENGTH_SHORT).show();
                 }
