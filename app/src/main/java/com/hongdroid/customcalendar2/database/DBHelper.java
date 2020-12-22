@@ -101,7 +101,7 @@ public class DBHelper extends SQLiteOpenHelper
     // UPDATE 문 (이벤트 목록을 수정 한다.)
     public void setUpdateEventDB(String _title, String _content, String _writeDate) {
         SQLiteDatabase db = getWritableDatabase();
-        db.execSQL("UPDATE EventList SET title='" + _title + "', content='" + _content + "' , writeDate='" + _writeDate + "' WHERE writeDate='");
+        db.execSQL("UPDATE EventList SET title='" + _title + "', content='" + _content + "' , writeDate='" + _writeDate + "' WHERE writeDate='" + _writeDate + "'");
     }
 
     // DELETE 문 (이벤트 목록을 제거 한다.)
