@@ -25,6 +25,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Iterator;
 
 /**
  * 리사이클러 뷰 어댑터 (그리드 레이아웃 매니져) 사용
@@ -161,6 +162,8 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomView
         dialog.setContentView(R.layout.dialog_edit);
         EditText et_title = dialog.findViewById(R.id.et_title);
         EditText et_content = dialog.findViewById(R.id.et_content);
+        Button btn_ok = dialog.findViewById(R.id.btn_ok);
+        Button btn_delete = dialog.findViewById(R.id.btn_delete);
 
         String title = "";
         String content = "";
@@ -170,9 +173,10 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomView
             content = _item.get(0).getStrEventContent();
             et_title.setText(title);
             et_content.setText(content);
+            btn_delete.setVisibility(View.VISIBLE);
         }
 
-        Button btn_ok = dialog.findViewById(R.id.btn_ok);
+        // 확인
         btn_ok.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -191,11 +195,11 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomView
                 item.setStrEventDate(_combineDate);
 
                 if( !mIsAlreadyWrited ) {
-                    mDBHelper.setInsertEventDB(title, content, _combineDate); // Insert Database
+                    mDBHelper.setInsertEventDB(title, content, _combineDate); // Insert Data
                     mEventInfos.add(item);
                     Toast.makeText(mContext, "이벤트 목록에 추가 되었습니다 !", Toast.LENGTH_SHORT).show();
                 } else {
-                    mDBHelper.setUpdateEventDB(title, content, _combineDate); // Update Database
+                    mDBHelper.setUpdateEventDB(title, content, _combineDate); // Update Data
                     for (int i = 0; i < mEventInfos.size(); i++)
                     {
                         if(mEventInfos.get(i).getStrEventDate().equals(_combineDate))
@@ -203,6 +207,24 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomView
                     }
                     Toast.makeText(mContext, "이벤트 목록이 수정 되었습니다 !", Toast.LENGTH_SHORT).show();
                 }
+                notifyDataSetChanged();
+                dialog.dismiss();
+            }
+        });
+
+        // 삭제
+        btn_delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mDBHelper.setDeleteEventDB(_combineDate); // Delete Data
+                Iterator iterator = mEventInfos.iterator();
+                while(iterator.hasNext()) {
+                    EventInfo CompareTargetItem = (EventInfo) iterator.next();
+                    if(CompareTargetItem.getStrEventDate().equals(_combineDate))
+                        iterator.remove();
+                }
+
+                Toast.makeText(mContext, "이벤트 목록이 삭제 되었습니다 !", Toast.LENGTH_SHORT).show();
                 notifyDataSetChanged();
                 dialog.dismiss();
             }
