@@ -25,7 +25,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private CustomAdapter mAdapter;
     private RecyclerView mRv_schedule;
-    private TextView mTv_prev, mTv_next, mTv_current;
+    private TextView
+            mTv_prev,
+            mTv_next,
+            mTv_current;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

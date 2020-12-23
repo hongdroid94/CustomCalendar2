@@ -73,6 +73,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomView
 
         holder.tv_date.setText(String.valueOf(mBaseCalendar.dataList.get(position)));
 
+        // SQLite Database 의 DB를 비교하여 날짜별 이벤트 유무에 따라 Dot Image를 VISIBLE 처리 해준다.
         if(mEventInfos.size() != 0) {
             for (int i = 0; i < mEventInfos.size(); i++)
             {
@@ -112,7 +113,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomView
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    int curPos = getAdapterPosition();                                                       // 현재 클릭 한 position ( 위치 ) 참고로 position 은 첫번째 배열 아이템이 0 으로 시작된다.
+                    int curPos = getAdapterPosition(); // 현재 클릭 한 position ( 위치 ) 참고로 position 은 첫번째 배열 아이템이 0 으로 시작된다.
                     String strCombineDate = getCombineDate(curPos);
                     ArrayList<EventInfo> item = mDBHelper.getSelectedEventItem(strCombineDate);
                     Toast.makeText(mContext, strCombineDate, Toast.LENGTH_SHORT).show();
@@ -124,10 +125,10 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomView
 
     private String getCombineDate(int _position)
     {
-        int iYear = mCurCalendar.get(Calendar.YEAR);                                         // 클릭 년(연)
-        int iMonth = mCurCalendar.get(Calendar.MONTH);                                       // 클릭 월
-        int iDay = mBaseCalendar.dataList.get(_position);                                    // 클릭 일
-        iMonth += 1; // Calendar.MONTH는 실제 월의 -1만큼 모자라기때문에 1을 더해줘야 한다.
+        int iYear = mCurCalendar.get(Calendar.YEAR);        // 클릭 년(연)
+        int iMonth = mCurCalendar.get(Calendar.MONTH);      // 클릭 월
+        int iDay = mBaseCalendar.dataList.get(_position);   // 클릭 일
+        iMonth += 1;                                        // Calendar.MONTH는 실제 월의 -1만큼 모자라기때문에 1을 더해줘야 한다.
 
         if( _position < mBaseCalendar.prevMonthTailOffset) {
             // 이전 달 꼬리 부분
