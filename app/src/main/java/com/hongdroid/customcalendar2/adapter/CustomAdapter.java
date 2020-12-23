@@ -35,7 +35,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomView
     private BaseCalendar mBaseCalendar;
     private DBHelper mDBHelper;
     private Calendar mCurCalendar;
-    private boolean isAlreadyWrited = false;    // 이전에 게시글을 작성한적 있는지 검사하는 불리언
+    private boolean mIsAlreadyWrited = false;    // 이전에 게시글을 작성한적 있는지 검사하는 불리언
 
 
     private ArrayList<EventInfo> mEventInfos;
@@ -76,10 +76,12 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomView
         if(mEventInfos.size() != 0) {
             for (int i = 0; i < mEventInfos.size(); i++)
             {
-                if(mEventInfos.get(i).getStrEventDate().equals(getCombineDate(position)))
+                if(mEventInfos.get(i).getStrEventDate().equals(getCombineDate(position))) {
                     holder.iv_event.setVisibility(View.VISIBLE);
-                else
+                    break;
+                } else {
                     holder.iv_event.setVisibility(View.INVISIBLE);
+                }
             }
         }
 
@@ -152,8 +154,9 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomView
 
     private void setEditEventDialog(String _combineDate, ArrayList<EventInfo> _item)
     {
+        mIsAlreadyWrited = false;
         // 팝업 창 띄우기
-        Dialog dialog = new Dialog(mContext, android.R.style.Theme_Material_Light_Dialog);
+        Dialog dialog = new Dialog(mContext);
         dialog.setContentView(R.layout.dialog_edit);
         EditText et_title = dialog.findViewById(R.id.et_title);
         EditText et_content = dialog.findViewById(R.id.et_content);
@@ -161,7 +164,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomView
         String title = "";
         String content = "";
         if(_item.size() != 0) {
-            isAlreadyWrited = true;
+            mIsAlreadyWrited = true;
             title = _item.get(0).getStrEventTitle();
             content = _item.get(0).getStrEventContent();
             et_title.setText(title);
@@ -186,7 +189,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomView
                 item.setStrEventContent(content);
                 item.setStrEventDate(_combineDate);
 
-                if( !isAlreadyWrited ) {
+                if( !mIsAlreadyWrited ) {
                     mDBHelper.setInsertEventDB(title, content, _combineDate); // Insert Database
                     mEventInfos.add(item);
                     Toast.makeText(mContext, "이벤트 목록에 추가 되었습니다 !", Toast.LENGTH_SHORT).show();
